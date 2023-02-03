@@ -7,7 +7,7 @@ const config = {
 	db: {
 			host:'localhost',
 			user: 'root',
-			password: '1qaz@WSX29',
+			password: 'root',
 			database: 'inventory'
 	}
 };

@@ -50,7 +50,6 @@ categoriesRouter.delete('/:id', async (req, res) => {
 		await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
 		res.send({response: 'category was deleted'});
 	}
-
 })
 
 

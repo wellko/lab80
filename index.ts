@@ -2,6 +2,7 @@ import express = require("express");
 import cors = require("cors");
 import mysqlDb from "./mysqlDb";
 import categoryRouter from "./routers/category";
+import placeRouter from "./routers/place";
 
 const app = express();
 const port = 8000;
@@ -9,6 +10,7 @@ const port = 8000;
 app.use(express.json());
 app.use(cors());
 app.use('/categories', categoryRouter);
+app.use('/places', placeRouter);
 app.use(express.static('public'));
 
 const run = async () => {
