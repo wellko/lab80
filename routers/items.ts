@@ -18,8 +18,8 @@ itemsRouter.get('/', async (req, res) => {
             category_id: element.category_id,
             place_id: element.place_id
         })
-        res.send(responseData);
-    })
+    });
+    res.send(responseData);
 });
 
 itemsRouter.get('/:id', async (req, res) => {

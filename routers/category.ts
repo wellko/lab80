@@ -34,7 +34,7 @@ categoriesRouter.post('/', async (req, res) => {
     }
     const categoryData: categoriesWithOutId = {
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description? req.body.description: '',
     }
     const connection = mysqlDb.getConnection();
     const result = await connection.query(

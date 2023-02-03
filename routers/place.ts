@@ -28,13 +28,12 @@ placeRouter.get('/:id', async (req, res) => {
 });
 
 placeRouter.post('/', async (req, res) => {
-
     if (!req.body.name) {
         return res.status(400).send({error: 'field name required'});
     }
     const placeData: placeWithOutID = {
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description? req.body.description: ''
     }
     const connection = mysqlDb.getConnection();
     const result = await connection.query(
@@ -51,7 +50,7 @@ placeRouter.delete('/:id', async (req, res) => {
     if (check.length > 0) {
         res.status(400).send({error: "can't delete this place"})
     } else {
-        await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
+        await connection.query('DELETE FROM place WHERE id = ?', [req.params.id]);
         res.send({response: 'place was deleted'});
     }
 });
