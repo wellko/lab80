@@ -26,3 +26,7 @@ export interface items {
 	place_id: string;
 	photo: string | null;
 }
+
+export type itemsData = Omit<items, 'description' | 'photo'>
+
+export type itemsWithOutId = Omit<items, 'id'>

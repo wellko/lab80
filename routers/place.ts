@@ -41,16 +41,16 @@ placeRouter.post('/', async (req, res) => {
         'INSERT INTO place (name, description) VALUES (?, ?)',
         [placeData.name, placeData.description])
     const responseInfo = result[0] as ResultSetHeader;
-    res.send({...placeData, id: responseInfo.insertId} );
+    res.send({...placeData, id: responseInfo.insertId});
 })
 
 placeRouter.delete('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
     const items = await connection.query('SELECT * FROM item WHERE place_id = ?', [req.params.id]);
     const check = items[0] as items[];
-    if(check.length > 0){
+    if (check.length > 0) {
         res.status(400).send({error: "can't delete this place"})
-    }else {
+    } else {
         await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
         res.send({response: 'place was deleted'});
     }
