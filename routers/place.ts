@@ -1,6 +1,6 @@
 import express from "express";
 import mysqlDb from "../mysqlDb";
-import {items, place, placeWithOutID} from "../types";
+import {items, place, placeData, placeWithOutID} from "../types";
 import {ResultSetHeader} from "mysql2";
 
 const placeRouter = express.Router();
@@ -9,7 +9,11 @@ placeRouter.get('/', async (req, res) => {
     const connection = mysqlDb.getConnection();
     const places = await connection.query('SELECT * FROM place');
     const response = places[0] as place[];
-    res.send(response);
+    let responseData: placeData[] = [];
+    response.map(element => {
+        responseData.push({id: element.id, name: element.name})
+    })
+    res.send(responseData);
 });
 
 placeRouter.get('/:id', async (req, res) => {
