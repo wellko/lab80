@@ -23,16 +23,16 @@ create table if not exists item
     id           int auto_increment
     primary key,
     name         varchar(100) not null,
-    category_id  int          null,
-    place_id int          null,
+    category_id  int          not null,
+    place_id int          not null,
     description  text         null,
     photo        text         null,
     constraint item_category_id_fk
     foreign key (category_id) references category (id)
-    on update cascade on delete set null,
+    on update cascade on delete no action ,
     constraint item_place_id_fk
     foreign key (place_id) references place (id)
-    on update cascade on delete set null
+    on update cascade on delete no action
     );
 
 

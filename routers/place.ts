@@ -33,7 +33,7 @@ placeRouter.post('/', async (req, res) => {
     }
     const placeData: placeWithOutID = {
         name: req.body.name,
-        description: req.body.description? req.body.description: ''
+        description: req.body.description ? req.body.description : ''
     }
     const connection = mysqlDb.getConnection();
     const result = await connection.query(
@@ -41,7 +41,7 @@ placeRouter.post('/', async (req, res) => {
         [placeData.name, placeData.description])
     const responseInfo = result[0] as ResultSetHeader;
     res.send({...placeData, id: responseInfo.insertId});
-})
+});
 
 placeRouter.delete('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
@@ -55,23 +55,19 @@ placeRouter.delete('/:id', async (req, res) => {
     }
 });
 
-placeRouter.put('/:id', async (req, res ) => {
+placeRouter.put('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
     const categoryData: categoriesWithOutId = {
         name: req.body.name,
         description: req.body.description
     }
-  const result = await connection.query(
-        'UPDATE place SET name = ?, description = ? WHERE id = ?' ,
+    const result = await connection.query(
+        'UPDATE place SET name = ?, description = ? WHERE id = ?',
         [categoryData.name, categoryData.description, req.params.id]);
-
-    if(!result) {
+    if (!result) {
         res.status(400).send({error: 'cant update'});
     }
-
-
     res.send({...categoryData, id: req.params.id});
-})
-
+});
 
 export default placeRouter;
