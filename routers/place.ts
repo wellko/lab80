@@ -1,6 +1,6 @@
 import express from "express";
 import mysqlDb from "../mysqlDb";
-import {items, place, placeData, placeWithOutID} from "../types";
+import {categoriesWithOutId, items, place, placeData, placeWithOutID} from "../types";
 import {ResultSetHeader} from "mysql2";
 
 const placeRouter = express.Router();
@@ -54,6 +54,24 @@ placeRouter.delete('/:id', async (req, res) => {
         await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
         res.send({response: 'place was deleted'});
     }
+});
+
+placeRouter.put('/:id', async (req, res ) => {
+    const connection = mysqlDb.getConnection();
+    const categoryData: categoriesWithOutId = {
+        name: req.body.name,
+        description: req.body.description
+    }
+  const result = await connection.query(
+        'UPDATE place SET name = ?, description = ? WHERE id = ?' ,
+        [categoryData.name, categoryData.description, req.params.id]);
+
+    if(!result) {
+        res.status(400).send({error: 'cant update'});
+    }
+
+
+    res.send({...categoryData, id: req.params.id});
 })
 
 

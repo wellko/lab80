@@ -42,7 +42,7 @@ categoriesRouter.post('/', async (req, res) => {
         [categoryData.name, categoryData.description])
     const responseInfo = result[0] as ResultSetHeader;
     res.send({...categoryData, id: responseInfo.insertId});
-})
+});
 
 categoriesRouter.delete('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
@@ -54,6 +54,23 @@ categoriesRouter.delete('/:id', async (req, res) => {
         await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
         res.send({response: 'category was deleted'});
     }
+});
+
+categoriesRouter.put('/:id', async (req, res ) => {
+    const connection = mysqlDb.getConnection();
+    const categoryData: categoriesWithOutId = {
+        name: req.body.name,
+        description: req.body.description
+    }
+    const result = await connection.query(
+        'UPDATE category SET name = ?, description = ? WHERE id = ?' ,
+        [categoryData.name, categoryData.description, req.params.id]);
+
+    if(!result) {
+        res.status(400).send({error: 'cant update'});
+    }
+
+    res.send({...categoryData, id: req.params.id});
 })
 
 
