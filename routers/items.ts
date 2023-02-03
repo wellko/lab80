@@ -65,7 +65,7 @@ itemsRouter.delete('/:id', async (req, res) => {
     const foundItems = item[0] as items[];
     const foundItem = foundItems[0];
     if (foundItems.length === 0) {
-        res.status(404).send({error: 'Cant delete this item222'});
+        res.status(404).send({error: 'Cant delete this item'});
     } else {
         const categories = await connection.query('SELECT * FROM category WHERE id = ?', [foundItem.category_id]);
         const categoryCheck = categories[0] as categories[];
