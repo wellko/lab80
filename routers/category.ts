@@ -1,6 +1,6 @@
 import express from "express";
 import mysqlDb from "../mysqlDb";
-import {categories, categoriesWithOutId} from "../types";
+import {categories, categoriesWithOutId, items} from "../types";
 import {ResultSetHeader} from "mysql2";
 
 const categoriesRouter = express.Router();
@@ -38,6 +38,19 @@ categoriesRouter.post('/', async (req, res) => {
 		[categoryData.name, categoryData.description])
 	const responseInfo = result[0] as ResultSetHeader;
 	res.send({...categoryData, id: responseInfo.insertId} );
+})
+
+categoriesRouter.delete('/:id', async (req, res) => {
+	const connection = mysqlDb.getConnection();
+	const items = await connection.query('SELECT * FROM item WHERE category_id = ?', [req.params.id]);
+	const check = items[0] as items[];
+	if(check.length > 0){
+		res.status(400).send({error: "can't delete this category"})
+	}else {
+		await connection.query('DELETE FROM category WHERE id = ?', [req.params.id]);
+		res.send({response: 'category was deleted'});
+	}
+
 })
 
 
