@@ -58,9 +58,12 @@ categoriesRouter.delete('/:id', async (req, res) => {
 
 categoriesRouter.put('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
+    const categories = await connection.query('SELECT * FROM category WHERE id = ?', [req.params.id]);
+    const responses = categories[0] as categories[];
+    const response = responses[0];
     const categoryData: categoriesWithOutId = {
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description? req.body.description : response.description
     }
     const result = await connection.query(
         'UPDATE category SET name = ?, description = ? WHERE id = ?',

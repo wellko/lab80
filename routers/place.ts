@@ -57,9 +57,12 @@ placeRouter.delete('/:id', async (req, res) => {
 
 placeRouter.put('/:id', async (req, res) => {
     const connection = mysqlDb.getConnection();
+    const places = await connection.query('SELECT * FROM place WHERE id = ?', [req.params.id]);
+    const responses = places[0] as place[];
+    const response = responses[0];
     const categoryData: categoriesWithOutId = {
         name: req.body.name,
-        description: req.body.description
+        description: req.body.description? req.body.description : response.description
     }
     const result = await connection.query(
         'UPDATE place SET name = ?, description = ? WHERE id = ?',

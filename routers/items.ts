@@ -98,7 +98,7 @@ itemsRouter.put('/:id', imagesUpload.single('photo'), async (req, res) => {
         name: req.body.name,
         category_id: req.body.category_id,
         place_id: req.body.place_id,
-        description: req.body.description,
+        description: req.body.description? req.body.description: foundItem.description,
         photo: req.file ? req.file.filename : foundItem.photo,
     }
     let result;
